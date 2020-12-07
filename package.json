@@ -1,0 +1,40 @@
+{
+  "name": "news-explorer-api",
+  "version": "1.0.0",
+  "description": "Practicum final project API",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "start": "run app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddemosi/news-explorer-api.git"
+  },
+  "author": "Danny Demosi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ddemosi/news-explorer-api/issues"
+  },
+  "homepage": "https://github.com/ddemosi/news-explorer-api#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^13.0.4",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-winston": "^4.0.5",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.10.18",
+    "validator": "^13.1.17",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.6"
+  }
+}
