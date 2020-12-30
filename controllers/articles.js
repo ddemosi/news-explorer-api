@@ -3,15 +3,18 @@ const AuthorizationRequiredError = require('../errors/authorization-required-err
 const BadRequestError = require('../errors/bad-request-error');
 const NotFoundError = require('../errors/not-found-error');
 const AccessDeniedError = require('../errors/access-denied-error');
+const {
+  badRequestMessage, authErrorMessage, resourceNotFoundMessage,
+} = require('../utils/constants');
 
 function getArticles(req, res, next) {
   if (!req.user._id) {
-    throw new AuthorizationRequiredError('User id could not be found');
+    throw new AuthorizationRequiredError(authErrorMessage);
   }
   Article.findArticleByUser(req.user._id)
     .then((articles) => {
       if (!articles) {
-        throw new BadRequestError('Unable to retrieve articles');
+        throw new BadRequestError(badRequestMessage);
       }
       res.status(200).send(articles);
     })
@@ -29,7 +32,7 @@ function createArticle(req, res, next) {
   })
     .then((result) => {
       if (!result) {
-        throw new BadRequestError('Invalid data submitted');
+        throw new BadRequestError(badRequestMessage);
       }
       res.status(200).send(result);
     })
@@ -42,16 +45,16 @@ function deleteArticle(req, res, next) {
   Article.findById(id)
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Could not find an article with that id');
+        throw new NotFoundError(resourceNotFoundMessage);
       }
       if (String(card.owner) === req.user._id) {
         Article.findByIdAndRemove(id, () => {
-          res.status(200).send({ message: 'Card deleted' });
+          res.status(200).send({ message: 'Article deleted' });
         });
       } else if (req.params.id === undefined) {
-        throw new NotFoundError('Could not find an article with that id');
+        throw new NotFoundError(resourceNotFoundMessage);
       } else {
-        throw new AccessDeniedError('Authorization required for this action');
+        throw new AccessDeniedError(authErrorMessage);
       }
     })
     .catch(next);

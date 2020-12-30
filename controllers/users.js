@@ -6,8 +6,9 @@ const isEmail = require('validator/lib/isEmail');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
 const ValidationError = require('../errors/validation-error');
-
-const { NODE_ENV, JWT_SECRET } = process.env;
+const {
+  badRequestMessage, resourceNotFoundMessage, badEmailMessage, validationErrorMessage,
+} = require('../utils/constants');
 
 const User = require('../models/user');
 
@@ -15,7 +16,7 @@ function getCurrentUserInfo(req, res, next) {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('User not found');
+        throw new NotFoundError(resourceNotFoundMessage);
       }
       res.status(200).send(user);
     })
@@ -35,7 +36,7 @@ function createUser(req, res, next) {
       };
       // redundant email validation
       if (!isEmail(req.body.email)) {
-        throw new BadRequestError('Email is not in proper format');
+        throw new BadRequestError(badEmailMessage);
       }
       // mongoose call to create the record
       User.create(body)
@@ -43,15 +44,15 @@ function createUser(req, res, next) {
           // check if any storage/validation errors occurred inside Mongo.
           // Mongo errors are handled by the central error system.
           if (!result) {
-            throw new BadRequestError('Invalid data submitted');
+            throw new BadRequestError(badRequestMessage);
           }
           // assigning a registration token
           const token = jwt.sign(
             { _id: result._id },
-            NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' },
+            process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret', { expiresIn: '7d' },
           );
 
-          const newObj = { name: result.name, email: result.email };
+          const newObj = { name: result.name, email: result.email, token };
 
           res.cookie('token', `Bearer ${token}`, { expires: new Date(Date.now() + 24 * 3600000) });
           res.status(200).send(newObj);
@@ -69,16 +70,17 @@ function login(req, res, next) {
   User.findUserByCredentials(email, password)
     .then((user) => {
       if (!user) {
-        throw new ValidationError('Email does not exist');
+        throw new ValidationError(validationErrorMessage);
       }
       return user;
     })
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' },
+        process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret', { expiresIn: '7d' },
       );
       res.cookie('token', `Bearer ${token}`, { expires: new Date(Date.now() + 24 * 3600000) });
+      res.status(200).send({ token: `Bearer ${token}` });
       res.end();
     })
     .catch(next);
