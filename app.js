@@ -11,6 +11,8 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorHandler } = require('./middlewares/errorHandler');
 const { limiter } = require('./utils/rateLimiter');
 const routes = require('./routes/index');
+
+const { PORT = 3000 } = process.env;
 // an array of allowed domains
 const allowedCors = [
   'https://danny-demosi.students.nomoreparties.site',
@@ -60,7 +62,7 @@ app.use(errors());
 
 app.use(errorHandler);
 
-app.listen(process.env.PORT, () => {
+app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.log(`App listening at port ${process.env.PORT}`);
+  console.log(`App listening at port ${PORT}`);
 });
