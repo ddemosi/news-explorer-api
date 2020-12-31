@@ -13,10 +13,10 @@ const { limiter } = require('./utils/rateLimiter');
 const routes = require('./routes/index');
 // an array of allowed domains
 const allowedCors = [
-  //   'https://danny-demosi.students.nomoreparties.site',
-  //   'http://www.danny-demosi.students.nomoreparties.site',
-  'http://localhost:3000',
-  'http://localhost:3001',
+  'https://danny-demosi.students.nomoreparties.site',
+  'http://www.danny-demosi.students.nomoreparties.site',
+  // 'http://localhost:3000',
+  // 'http://localhost:3001',
 ];
 
 // connect to db
