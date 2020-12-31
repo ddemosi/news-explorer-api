@@ -15,8 +15,8 @@ const routes = require('./routes/index');
 const allowedCors = [
   'https://danny-demosi.students.nomoreparties.site',
   'http://www.danny-demosi.students.nomoreparties.site',
-  // 'http://localhost:3000',
-  // 'http://localhost:3001',
+  'http://localhost:3000',
+  'http://localhost:3001',
 ];
 
 // connect to db
