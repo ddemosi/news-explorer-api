@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken');
 const AuthorizationRequiredError = require('../errors/authorization-required-error');
 require('dotenv').config();
 
-const { JWT_SECRET, NODE_ENV } = process.env;
-
 module.exports = (req, res, next) => {
   try {
     const authorization = req.cookies.token;
@@ -14,7 +12,7 @@ module.exports = (req, res, next) => {
     let payload;
 
     try {
-      payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+      payload = jwt.verify(token, process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret');
     } catch (err) {
       throw new AuthorizationRequiredError('Could not verify token');
     }

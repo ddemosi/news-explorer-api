@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, Segments } = require('celebrate');
 
 const auth = require('../middlewares/auth');
 const { getArticles, createArticle, deleteArticle } = require('../controllers/articles');
@@ -20,6 +20,12 @@ router.post('/articles', auth,
   }),
   createArticle);
 
-router.delete('/articles/:articleId', auth, deleteArticle);
+router.delete('/articles/:articleId', auth,
+  celebrate({
+    [Segments.PARAMS]: Joi.object({
+      articleId: Joi.string().required().hex(),
+    }),
+  }),
+  deleteArticle);
 
 module.exports = router;
