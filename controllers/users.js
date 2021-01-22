@@ -86,8 +86,14 @@ function login(req, res, next) {
     .catch(next);
 }
 
+function logout(req, res) {
+  res.clearCookie('token');
+  res.status(200).send({ message: 'User logged out' });
+}
+
 module.exports = {
   getCurrentUserInfo,
   createUser,
   login,
+  logout,
 };

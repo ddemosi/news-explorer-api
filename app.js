@@ -15,10 +15,10 @@ const routes = require('./routes/index');
 const { PORT = 3000 } = process.env;
 // an array of allowed domains
 const allowedCors = [
-  'https://danny-demosi.students.nomoreparties.site',
-  'http://www.danny-demosi.students.nomoreparties.site',
-  'http://localhost:3000',
-  'http://localhost:3001',
+  'https://danny-news-explorer.students.nomoreparties.site',
+  'http://www.danny-news-explorer.students.nomoreparties.site',
+  // 'http://localhost:3000',
+  // 'http://localhost:3001',
 ];
 
 // connect to db
@@ -38,7 +38,7 @@ app.use(helmet());
 
 app.use(requestLogger);
 
-app.use(express.json(), cors());
+app.use(express.json());
 
 app.use(cookieParser());
 
@@ -46,13 +46,18 @@ app.use((req, res, next) => {
   const { origin } = req.headers; // assign the corresponding header to the origin variable
 
   if (allowedCors.includes(origin)) { // check that the origin value is among the allowed domains
-    res.header('Access-Control-Allow-Origin', origin);
+    res
+      .header('Access-Control-Allow-Origin', origin)
+      .header('Access-Control-Allow-Credentials', true);
   }
 
   next();
 });
 
-app.options('*', cors());
+app.options('*', cors({
+  credentials: true,
+  origin: true,
+}));
 
 app.use('/', routes);
 
