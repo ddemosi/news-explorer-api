@@ -19,7 +19,7 @@ const allowedCors = [
   'http://danny-news-explorer.students.nomoreparties.site',
   'https://www.danny-news-explorer.students.nomoreparties.site',
   'http://www.danny-news-explorer.students.nomoreparties.site',
-  // 'http://localhost:3000',
+  'http://localhost:3000',
   // 'http://localhost:3001',
 ];
 
