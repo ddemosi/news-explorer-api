@@ -57,12 +57,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.options('*', cors(
-  {
+app.options('*', cors({
     credentials: true,
     origin: true,
-  },
-));
+  }));
 
 app.use('/', routes);
 
