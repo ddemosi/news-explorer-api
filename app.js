@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { errors } = require('celebrate');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -43,7 +43,7 @@ app.use(requestLogger);
 
 app.use(express.json());
 
-// app.use(cookieParser());
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   const { origin } = req.headers; // assign the corresponding header to the origin variable
