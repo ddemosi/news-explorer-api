@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { errors } = require('celebrate');
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -42,24 +42,26 @@ app.use(requestLogger);
 
 app.use(express.json());
 
-app.use(cookieParser());
+// app.use(cookieParser());
 
 app.use((req, res, next) => {
   const { origin } = req.headers; // assign the corresponding header to the origin variable
 
   if (allowedCors.includes(origin)) { // check that the origin value is among the allowed domains
     res
-      .header('Access-Control-Allow-Origin', origin)
-      .header('Access-Control-Allow-Credentials', true);
+      .header('Access-Control-Allow-Origin', origin);
+    // .header('Access-Control-Allow-Credentials', true);
   }
 
   next();
 });
 
-app.options('*', cors({
-  credentials: true,
-  origin: true,
-}));
+app.options('*', cors(
+  //   {
+  //   credentials: true,
+  //   origin: true,
+  // }
+));
 
 app.use('/', routes);
 

@@ -4,7 +4,7 @@ require('dotenv').config();
 
 module.exports = (req, res, next) => {
   try {
-    const authorization = req.cookies.token;
+    const { authorization } = req.headers;
     if (!authorization || !authorization.startsWith('Bearer ')) {
       throw new AuthorizationRequiredError('Authorization Error');
     }

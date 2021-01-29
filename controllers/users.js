@@ -52,9 +52,8 @@ function createUser(req, res, next) {
             process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret', { expiresIn: '7d' },
           );
 
-          const newObj = { name: result.name, email: result.email, token };
+          const newObj = { name: result.name, email: result.email, token: `Bearer ${token}` };
 
-          res.cookie('token', `Bearer ${token}`, { expires: new Date(Date.now() + 24 * 3600000), sameSite: 'none', secure: true });
           res.status(200).send(newObj);
         })
         .catch(next);
@@ -79,20 +78,13 @@ function login(req, res, next) {
         { _id: user._id },
         process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret', { expiresIn: '7d' },
       );
-      res.cookie('token', `Bearer ${token}`, { expires: new Date(Date.now() + 24 * 3600000), sameSite: 'none', secure: true });
       res.status(200).send({ token: `Bearer ${token}` });
     })
     .catch(next);
-}
-
-function logout(req, res) {
-  res.clearCookie('token');
-  res.status(200).send({ message: 'User logged out' });
 }
 
 module.exports = {
   getCurrentUserInfo,
   createUser,
   login,
-  logout,
 };
